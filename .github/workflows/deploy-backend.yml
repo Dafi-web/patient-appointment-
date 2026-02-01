@@ -1,0 +1,39 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm ci
+      
+      - name: Run tests (if any)
+        working-directory: ./backend
+        run: npm test --if-present
+      
+      - name: Deploy to Render
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Backend deployment triggered"
+          echo "Configure Render webhook or use Render dashboard for deployment"
+          echo "Repository URL: https://github.com/${{ github.repository }}"
