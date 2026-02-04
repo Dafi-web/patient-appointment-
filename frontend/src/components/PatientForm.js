@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getPatientById, createPatient, updatePatient } from '../services/api';
@@ -33,13 +33,7 @@ const PatientForm = () => {
     },
   });
 
-  useEffect(() => {
-    if (isEdit) {
-      fetchPatient();
-    }
-  }, [id]);
-
-  const fetchPatient = async () => {
+  const fetchPatient = useCallback(async () => {
     try {
       const response = await getPatientById(id);
       const patient = response.data.data;
@@ -50,7 +44,13 @@ const PatientForm = () => {
     } catch (error) {
       console.error('Error fetching patient:', error);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (isEdit) {
+      fetchPatient();
+    }
+  }, [id, isEdit, fetchPatient]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

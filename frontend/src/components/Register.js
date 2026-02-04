@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 
 const Register = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { register } = useAuth();
   const [formData, setFormData] = useState({

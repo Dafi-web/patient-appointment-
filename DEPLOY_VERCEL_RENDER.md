@@ -79,9 +79,9 @@ Fill in the following settings:
 - Set to: `frontend`
 
 **Build Settings:**
-- **Build Command**: `cd frontend && npm install && npm run build`
-- **Output Directory**: `frontend/build`
-- **Install Command**: (leave default or `npm install`)
+- **Build Command**: `npm run build` or `react-scripts build`
+- **Output Directory**: `build`
+- **Install Command**: `npm install`
 
 **Environment Variables:**
 Click **"Add"** and add:
