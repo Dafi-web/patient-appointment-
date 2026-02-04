@@ -49,14 +49,33 @@ const startServer = async () => {
 startServer();
 
 // Middleware - CORS configuration
+const allowedOrigins = [
+  'http://localhost:3000', 
+  'http://localhost:3001', 
+  'http://127.0.0.1:3000',
+];
+
+// Add Vercel frontend URL if provided
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000', 
-    'http://localhost:3001', 
-    'http://127.0.0.1:3000',
-    // Add your production frontend URLs here after deployment
-    process.env.FRONTEND_URL || 'https://patient-appointment-frontend.vercel.app'
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Allow localhost and Vercel domains
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.includes('.vercel.app') ||
+      origin.includes('vercel.app')
+    ) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins for now - restrict in production if needed
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
