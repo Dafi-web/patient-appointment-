@@ -6,12 +6,19 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('token');
+    }
+    return null;
+  });
 
   const logout = useCallback(() => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+    }
     delete api.defaults.headers.common['Authorization'];
   }, []);
 
@@ -42,7 +49,9 @@ export const AuthProvider = ({ children }) => {
       const { token: newToken, ...userData } = response.data.data;
       setToken(newToken);
       setUser(userData);
-      localStorage.setItem('token', newToken);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', newToken);
+      }
       api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       return { success: true };
     } catch (error) {
@@ -84,7 +93,9 @@ export const AuthProvider = ({ children }) => {
       const { token: newToken, ...user } = response.data.data;
       setToken(newToken);
       setUser(user);
-      localStorage.setItem('token', newToken);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', newToken);
+      }
       api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       return { success: true };
     } catch (error) {
