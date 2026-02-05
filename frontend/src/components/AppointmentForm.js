@@ -43,12 +43,14 @@ const AppointmentForm = () => {
     if (isEdit) {
       fetchAppointment();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
     if (formData.doctor) {
       fetchAvailableDates();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.doctor]);
 
   useEffect(() => {
@@ -58,6 +60,7 @@ const AppointmentForm = () => {
       setAvailableSlots([]);
       setFormData(prev => ({ ...prev, appointmentTime: '' }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.doctor, formData.appointmentDate]);
 
   const fetchDoctors = async () => {
@@ -234,10 +237,6 @@ const AppointmentForm = () => {
       const errorMessage = error.response?.data?.error || error.message || 'Error saving appointment';
       alert(errorMessage);
     }
-  };
-
-  const isDateAvailable = (date) => {
-    return availableDates.includes(date);
   };
 
   const selectedDoctor = doctors.find(d => d._id === formData.doctor);

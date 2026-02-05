@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getDoctorById } from '../services/api';
 
 const DoctorProfile = () => {
-  const { t } = useTranslation();
+  useTranslation(); // i18n ready
   const { id } = useParams();
-  const navigate = useNavigate();
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     fetchDoctor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchDoctor = async () => {

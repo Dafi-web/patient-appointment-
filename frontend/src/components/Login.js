@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 
 const Login = () => {
-  const { t } = useTranslation();
+  useTranslation(); // i18n ready
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({

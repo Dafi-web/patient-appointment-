@@ -9,7 +9,7 @@ import ProfileIcon from './ProfileIcon';
 const AppointmentList = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { isAdmin, isPatient } = useAuth();
+  const { isAdmin } = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');

@@ -6,7 +6,7 @@ import api from '../services/api';
 import ProfileIcon from './ProfileIcon';
 
 const AdminDashboard = () => {
-  const { t } = useTranslation();
+  useTranslation(); // i18n ready
   const [pendingAppointments, setPendingAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [adminNotes, setAdminNotes] = useState({});

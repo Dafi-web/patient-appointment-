@@ -24,6 +24,7 @@ const DoctorForm = () => {
     if (isEdit) {
       fetchDoctor();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchDoctor = async () => {

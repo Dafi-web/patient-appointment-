@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import api from '../services/api';
 
 const NotificationBell = () => {
-  const { t } = useTranslation();
+  useTranslation(); // i18n ready
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
