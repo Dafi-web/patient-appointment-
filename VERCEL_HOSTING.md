@@ -34,10 +34,9 @@ git push origin main
 
    | Name                | Value |
    |---------------------|--------|
-   | `REACT_APP_API_URL` | `https://YOUR-RENDER-BACKEND-URL.onrender.com/api` |
+   | `REACT_APP_API_URL` | `https://patient-appointment-8nfa.onrender.com/api` |
 
-   Replace `YOUR-RENDER-BACKEND-URL` with your actual Render backend URL (e.g. `patient-appointment-backend.onrender.com`).  
-   The value must end with `/api`.
+   **Backend URL:** `https://patient-appointment-8nfa.onrender.com` — the value above must end with `/api`.
 
 6. Click **Deploy** and wait for the build to finish.
 
@@ -69,9 +68,10 @@ So the frontend can call the API without CORS errors:
 
 ## Quick reference
 
+- **Backend (Render):** `https://patient-appointment-8nfa.onrender.com`
+- **API base (for frontend):** `https://patient-appointment-8nfa.onrender.com/api`
 - **Frontend (Vercel):** `https://your-project.vercel.app`
-- **Backend (Render):** `https://your-backend.onrender.com`
-- **Vercel env:** `REACT_APP_API_URL=https://your-backend.onrender.com/api`
+- **Vercel env:** `REACT_APP_API_URL=https://patient-appointment-8nfa.onrender.com/api`
 - **Render env:** `FRONTEND_URL=https://your-project.vercel.app`
 
 Every push to `main` will auto-deploy the frontend on Vercel.

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import connectDB from './config/db.js';
+import User from './models/User.js';
 import authRoutes from './routes/authRoutes.js';
 import patientRoutes from './routes/patientRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
@@ -20,12 +21,31 @@ const app = express();
 // Connect to MongoDB - wait for connection before starting server
 let serverStarted = false;
 
+const ensureDefaultAdmin = async () => {
+  try {
+    const adminExists = await User.findOne({ role: 'admin' });
+    if (adminExists) return;
+    await User.create({
+      firstName: 'Admin',
+      lastName: 'User',
+      email: 'admin@example.com',
+      password: 'admin123',
+      role: 'admin',
+      phone: '+1234567890',
+    });
+    console.log('Default admin created: admin@example.com / admin123');
+  } catch (err) {
+    if (err.code === 11000) return; // already exists (duplicate email)
+    console.error('Could not create default admin:', err.message);
+  }
+};
+
 const startServer = async () => {
   try {
     await connectDB();
-    // Wait a bit for connection to stabilize
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await ensureDefaultAdmin();
+
     if (!serverStarted) {
       const PORT = process.env.PORT || 5001;
       app.listen(PORT, () => {
