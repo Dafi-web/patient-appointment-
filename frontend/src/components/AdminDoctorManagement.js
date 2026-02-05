@@ -16,11 +16,14 @@ const AdminDoctorManagement = () => {
   }, []);
 
   const fetchDoctors = async () => {
+    setLoading(true);
     try {
       const response = await getDoctors();
-      setDoctors(response.data.data);
+      const list = response?.data?.data ?? response?.data;
+      setDoctors(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error('Error fetching doctors:', error);
+      setDoctors([]);
     } finally {
       setLoading(false);
     }
@@ -33,14 +36,15 @@ const AdminDoctorManagement = () => {
         fetchDoctors();
       } catch (error) {
         console.error('Error deleting doctor:', error);
-        alert('Error deleting doctor');
+        alert(error.response?.data?.error || 'Error deleting doctor');
       }
     }
   };
 
+  const safeStr = (v) => (v != null ? String(v) : '');
   const filteredDoctors = doctors.filter(doctor =>
-    `${doctor.firstName} ${doctor.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doctor.specialization.toLowerCase().includes(searchTerm.toLowerCase())
+    `${safeStr(doctor.firstName)} ${safeStr(doctor.lastName)}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (doctor.specialization || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {

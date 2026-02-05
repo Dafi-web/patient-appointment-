@@ -66,8 +66,8 @@ const AppointmentForm = () => {
   const fetchDoctors = async () => {
     try {
       const response = await getDoctors();
-      setDoctors(response.data.data || []);
-      console.log('Doctors loaded:', response.data.data?.length || 0);
+      const list = response?.data?.data ?? response?.data;
+      setDoctors(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error('Error fetching doctors:', error);
       setDoctors([]);

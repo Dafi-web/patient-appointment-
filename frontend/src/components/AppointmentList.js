@@ -21,9 +21,11 @@ const AppointmentList = () => {
   const fetchAppointments = async () => {
     try {
       const response = await getAppointments();
-      setAppointments(response.data.data);
+      const list = response?.data?.data ?? response?.data;
+      setAppointments(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error('Error fetching appointments:', error);
+      setAppointments([]);
     } finally {
       setLoading(false);
     }
@@ -69,7 +71,14 @@ const AppointmentList = () => {
   });
 
   if (loading) {
-    return <div className="card">Loading...</div>;
+    return (
+      <div className="card">
+        <div className="doctors-loading">
+          <div className="loading-spinner" />
+          <p>Loading appointments...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
