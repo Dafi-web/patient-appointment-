@@ -50,8 +50,7 @@ const AppContent = () => {
   };
 
   return (
-    <Router>
-      <div className="App">
+    <div className="App">
         <nav className="navbar">
           <div className="nav-container">
             <Link to="/" className="nav-title">{t('title')}</Link>
@@ -220,14 +219,15 @@ const AppContent = () => {
           </Routes>
         </main>
       </div>
-    </Router>
   );
 };
 
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <Router>
+        <AppContent />
+      </Router>
     </AuthProvider>
   );
 }
