@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import connectDB from './config/db.js';
@@ -15,6 +16,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 dotenv.config();
+
+// Ensure uploads directory exists
+const uploadsDir = join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Created uploads directory:', uploadsDir);
+}
 
 const app = express();
 
@@ -107,7 +115,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve uploaded files
-app.use('/uploads', express.static(join(__dirname, 'uploads')));
+app.use('/uploads', (req, res, next) => {
+  const filePath = join(__dirname, 'uploads', req.path);
+  
+  // Check if file exists before serving
+  if (!fs.existsSync(filePath)) {
+    console.warn('File not found:', filePath);
+    return res.status(404).json({
+      success: false,
+      error: 'File not found'
+    });
+  }
+  
+  // Serve the file
+  express.static(join(__dirname, 'uploads'))(req, res, next);
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
