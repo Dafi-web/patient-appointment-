@@ -4,11 +4,27 @@ import axios from 'axios';
 let API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
 // Clean up the URL - remove any whitespace
-API_URL = API_URL.trim();
+if (API_URL) {
+  API_URL = API_URL.trim();
+  
+  // Fix common issues: remove variable name if accidentally included
+  // Handle cases where env var might be set as "REACT_APP_API_URL=https://..."
+  if (API_URL.includes('REACT_APP_API_URL=')) {
+    API_URL = API_URL.split('REACT_APP_API_URL=')[1] || API_URL;
+  }
+  // Handle cases where it might start with "REAC" (partial variable name)
+  if (API_URL.startsWith('REAC') && !API_URL.startsWith('REACT')) {
+    API_URL = API_URL.replace(/^REAC/, '');
+  }
+  
+  // Remove any quotes that might be around the URL
+  API_URL = API_URL.replace(/^["']|["']$/g, '');
+}
 
 // Validate URL format
-if (!API_URL.startsWith('http://') && !API_URL.startsWith('https://')) {
+if (!API_URL || (!API_URL.startsWith('http://') && !API_URL.startsWith('https://'))) {
   console.error('Invalid API URL format:', API_URL);
+  console.error('Using default localhost URL');
   // Default to localhost if invalid
   API_URL = 'http://localhost:5001/api';
 } else {
