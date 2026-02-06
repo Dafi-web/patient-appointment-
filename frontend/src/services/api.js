@@ -3,7 +3,7 @@ import axios from 'axios';
 // Get API URL from environment variable, with validation
 let API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
-// Clean up the URL - remove any whitespace and ensure it's a valid URL
+// Clean up the URL - remove any whitespace
 API_URL = API_URL.trim();
 
 // Validate URL format
@@ -11,10 +11,13 @@ if (!API_URL.startsWith('http://') && !API_URL.startsWith('https://')) {
   console.error('Invalid API URL format:', API_URL);
   // Default to localhost if invalid
   API_URL = 'http://localhost:5001/api';
+} else {
+  // Ensure URL ends with /api (but not /api/api)
+  API_URL = API_URL.replace(/\/+$/, ''); // Remove trailing slashes
+  if (!API_URL.endsWith('/api')) {
+    API_URL = API_URL + '/api';
+  }
 }
-
-// Ensure URL doesn't end with double slashes
-API_URL = API_URL.replace(/\/+$/, '') + '/api';
 
 // Log the API URL in development (not in production for security)
 if (process.env.NODE_ENV === 'development') {
