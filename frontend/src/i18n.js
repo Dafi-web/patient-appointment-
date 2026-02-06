@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
-      title: 'Patient Appointment Systems',
+      title: 'DIILLA REFERAL HOSPITAL',
       patients: 'Patients',
       doctors: 'Doctors',
       appointments: 'Appointments',
@@ -43,12 +43,12 @@ const resources = {
       female: 'Female',
       other: 'Other',
       // Home page
-      heroTitle: 'International Patient Care',
-      heroSubtitle: 'Quality healthcare, expert doctors, and easy online appointments. Your health, our priority.',
+      heroTitle: 'DIILLA REFERAL HOSPITAL',
+      heroSubtitle: 'Quality healthcare, expert doctors, and easy online appointments. Located in Dilla, Ethiopia. Your health, our priority.',
       bookAppointment: 'Book an Appointment',
       patientLogin: 'Patient Login',
       aboutUs: 'About Us',
-      aboutText1: 'We are a modern healthcare facility committed to providing international-standard medical care with a focus on accessibility, transparency, and patient comfort.',
+      aboutText1: 'DIILLA REFERAL HOSPITAL is a modern healthcare facility located in Dilla, Ethiopia, committed to providing international-standard medical care with a focus on accessibility, transparency, and patient comfort.',
       aboutText2: 'Our appointment system lets you choose your doctor, pick a convenient time, and manage your visits online—in multiple languages. We serve patients from all backgrounds with the same high standard of care.',
       visionMission: 'Our Vision & Mission',
       vision: 'Vision',
@@ -75,13 +75,13 @@ const resources = {
       readyToBookText: 'Register for an account or sign in to manage your appointments.',
       createAccount: 'Create Account',
       signIn: 'Sign In',
-      footerBrand: 'International Patient Appointment',
-      footerCopy: 'Quality healthcare for everyone.',
+      footerBrand: 'DIILLA REFERAL HOSPITAL',
+      footerCopy: 'Dilla, Ethiopia - Quality healthcare for everyone.',
     },
   },
   am: {
     translation: {
-      title: 'የታማሚ ምርመራ ስርዓት',
+      title: 'ዲላ ሪፈራል ሆስፒታል',
       patients: 'ታማሚዎች',
       doctors: 'ሐኪሞች',
       appointments: 'ምርመራዎች',
@@ -120,12 +120,12 @@ const resources = {
       female: 'ሴት',
       other: 'ሌላ',
       // Home page
-      heroTitle: 'ዓለም አቀፍ የታማሚ እንክብካቤ',
-      heroSubtitle: 'በጥራት የተሸፈነ የጤና እንክብካቤ፣ ሙያዊ ሐኪሞች እና ቀላል የመስመር ላይ ምርመራዎች። ጤናዎ የእኛ ቅድሚያ ነው።',
+      heroTitle: 'ዲላ ሪፈራል ሆስፒታል',
+      heroSubtitle: 'በጥራት የተሸፈነ የጤና እንክብካቤ፣ ሙያዊ ሐኪሞች እና ቀላል የመስመር ላይ ምርመራዎች። በዲላ፣ ኢትዮጵያ ውስጥ የምንገኝ ነን። ጤናዎ የእኛ ቅድሚያ ነው።',
       bookAppointment: 'ምርመራ ይዘዙ',
       patientLogin: 'የታማሚ መግቢያ',
       aboutUs: 'ስለእኛ',
-      aboutText1: 'እኛ በመዳረሻ፣ በታላቅነት እና በታማሚ አስተማማኝነት ላይ ትኩረት በማድረግ ዓለም አቀፍ ደረጃ የጤና እንክብካቤ ለመስጠት የተገደዱ ዘመናዊ የጤና ተቋማት ነን።',
+      aboutText1: 'ዲላ ሪፈራል ሆስፒታል በዲላ፣ ኢትዮጵያ ውስጥ የምንገኝ ዘመናዊ የጤና ተቋም ነው። በመዳረሻ፣ በታላቅነት እና በታማሚ አስተማማኝነት ላይ ትኩረት በማድረግ ዓለም አቀፍ ደረጃ የጤና እንክብካቤ ለመስጠት የተገደድን ነን።',
       aboutText2: 'የምርመራ ስርዓታችን ሐኪምዎን ለመምረጥ፣ ምቹ ሰዓት ለመምረጥ እና ጉዞዎችዎን በመስመር ላይ ለማስተዳደር ያስችልዎታል—በበርካታ ቋንቋዎች። ከሁሉም ዳራዎች የሚመጡ ታማሚዎችን በተመሳሳይ ከፍተኛ የእንክብካቤ ደረጃ እንገልጻለን።',
       visionMission: 'የእኛ ራዕይ እና ተልዕኮ',
       vision: 'ራዕይ',
@@ -152,8 +152,8 @@ const resources = {
       readyToBookText: 'መለያ ለመፍጠር ወይም ምርመራዎችዎን ለማስተዳደር ይግቡ።',
       createAccount: 'መለያ ይፍጠሩ',
       signIn: 'ይግቡ',
-      footerBrand: 'ዓለም አቀፍ የታማሚ ምርመራ',
-      footerCopy: 'ለሁሉም በጥራት የተሸፈነ የጤና እንክብካቤ።',
+      footerBrand: 'ዲላ ሪፈራል ሆስፒታል',
+      footerCopy: 'ዲላ፣ ኢትዮጵያ - ለሁሉም በጥራት የተሸፈነ የጤና እንክብካቤ።',
     },
   },
 };
