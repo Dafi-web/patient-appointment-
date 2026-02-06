@@ -21,10 +21,28 @@ import NotificationBell from './components/NotificationBell';
 
 const AppContent = () => {
   const { t, i18n } = useTranslation();
-  const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const { isAuthenticated, isAdmin, user, logout, loading } = useAuth();
   const location = useLocation();
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const isHome = location.pathname === '/' && !isAuthenticated;
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="App">
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          fontSize: '1.2rem',
+          color: '#667eea'
+        }}>
+          Loading...
+        </div>
+      </div>
+    );
+  }
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);

@@ -28,7 +28,13 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.data);
     } catch (error) {
       console.error('Error fetching user:', error);
-      logout();
+      // Don't logout on network errors - just clear the invalid token
+      if (error.response?.status === 401) {
+        logout();
+      } else {
+        // For network errors, just set loading to false and continue
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -37,11 +43,23 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      fetchUser();
+      // Add timeout to prevent hanging
+      let timeoutId;
+      const fetchPromise = fetchUser();
+      
+      timeoutId = setTimeout(() => {
+        console.warn('User fetch timeout - continuing without user data');
+        setLoading(false);
+      }, 5000); // 5 second timeout
+      
+      fetchPromise.finally(() => {
+        if (timeoutId) clearTimeout(timeoutId);
+      });
     } else {
       setLoading(false);
     }
-  }, [token, fetchUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]); // Only depend on token, fetchUser is stable
 
   const login = async (email, password) => {
     try {
