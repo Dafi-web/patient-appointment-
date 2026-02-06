@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { getDoctors, deleteDoctor } from '../services/api';
+import { SPECIALIZATIONS, DEPARTMENTS } from '../constants/doctorOptions';
 import ProfileIcon from './ProfileIcon';
 
 const DoctorList = () => {
@@ -13,6 +14,8 @@ const DoctorList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterSpecialization, setFilterSpecialization] = useState('');
+  const [filterDepartment, setFilterDepartment] = useState('');
 
   const fetchDoctors = useCallback(async () => {
     setLoading(true);
@@ -48,11 +51,13 @@ const DoctorList = () => {
 
   const safeStr = (v) => (v != null ? String(v) : '');
   const filteredDoctors = doctors.filter((doctor) => {
+    if (filterSpecialization && (doctor.specialization || '') !== filterSpecialization) return false;
+    if (filterDepartment && (doctor.department || '') !== filterDepartment) return false;
     const name = `${safeStr(doctor.firstName)} ${safeStr(doctor.lastName)}`.toLowerCase();
     const spec = (doctor.specialization || '').toLowerCase();
     const dept = (doctor.department || '').toLowerCase();
     const term = searchTerm.toLowerCase();
-    return name.includes(term) || spec.includes(term) || dept.includes(term);
+    return !term || name.includes(term) || spec.includes(term) || dept.includes(term);
   });
 
   if (loading) {
@@ -92,14 +97,38 @@ const DoctorList = () => {
         </div>
       )}
 
-      <div className="search-bar">
-        <input
-          type="text"
-          className="search-input"
-          placeholder={t('search') || 'Search by name, specialization...'}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="filters-row">
+        <div className="search-bar" style={{ flex: 1, maxWidth: '320px' }}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder={t('search') || 'Search by name...'}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <select
+          className="form-select filter-select"
+          value={filterSpecialization}
+          onChange={(e) => setFilterSpecialization(e.target.value)}
+          title="Filter by specialization"
+        >
+          <option value="">All specializations</option>
+          {SPECIALIZATIONS.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+        <select
+          className="form-select filter-select"
+          value={filterDepartment}
+          onChange={(e) => setFilterDepartment(e.target.value)}
+          title="Filter by department"
+        >
+          <option value="">All departments</option>
+          {DEPARTMENTS.map((d) => (
+            <option key={d} value={d}>{d}</option>
+          ))}
+        </select>
       </div>
 
       {filteredDoctors.length === 0 ? (

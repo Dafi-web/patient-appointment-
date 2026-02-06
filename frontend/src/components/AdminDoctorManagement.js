@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getDoctors, deleteDoctor } from '../services/api';
+import { SPECIALIZATIONS, DEPARTMENTS } from '../constants/doctorOptions';
 import ProfileIcon from './ProfileIcon';
 
 const AdminDoctorManagement = () => {
@@ -10,6 +11,8 @@ const AdminDoctorManagement = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterSpecialization, setFilterSpecialization] = useState('');
+  const [filterDepartment, setFilterDepartment] = useState('');
 
   useEffect(() => {
     fetchDoctors();
@@ -42,10 +45,15 @@ const AdminDoctorManagement = () => {
   };
 
   const safeStr = (v) => (v != null ? String(v) : '');
-  const filteredDoctors = doctors.filter(doctor =>
-    `${safeStr(doctor.firstName)} ${safeStr(doctor.lastName)}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (doctor.specialization || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredDoctors = doctors.filter((doctor) => {
+    if (filterSpecialization && (doctor.specialization || '') !== filterSpecialization) return false;
+    if (filterDepartment && (doctor.department || '') !== filterDepartment) return false;
+    const term = searchTerm.toLowerCase();
+    if (!term) return true;
+    const name = `${safeStr(doctor.firstName)} ${safeStr(doctor.lastName)}`.toLowerCase();
+    const spec = (doctor.specialization || '').toLowerCase();
+    return name.includes(term) || spec.includes(term);
+  });
 
   if (loading) {
     return <div className="card">Loading...</div>;
@@ -63,14 +71,36 @@ const AdminDoctorManagement = () => {
         </button>
       </div>
 
-      <div className="search-bar">
-        <input
-          type="text"
-          className="search-input"
-          placeholder={t('search')}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="filters-row">
+        <div className="search-bar" style={{ flex: 1, maxWidth: '320px' }}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder={t('search')}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <select
+          className="form-select filter-select"
+          value={filterSpecialization}
+          onChange={(e) => setFilterSpecialization(e.target.value)}
+        >
+          <option value="">All specializations</option>
+          {SPECIALIZATIONS.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+        <select
+          className="form-select filter-select"
+          value={filterDepartment}
+          onChange={(e) => setFilterDepartment(e.target.value)}
+        >
+          <option value="">All departments</option>
+          {DEPARTMENTS.map((d) => (
+            <option key={d} value={d}>{d}</option>
+          ))}
+        </select>
       </div>
 
       {filteredDoctors.length === 0 ? (

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+import HomePage from './components/HomePage';
 import PatientList from './components/PatientList';
 import DoctorList from './components/DoctorList';
 import DoctorProfile from './components/DoctorProfile';
@@ -21,7 +22,9 @@ import NotificationBell from './components/NotificationBell';
 const AppContent = () => {
   const { t, i18n } = useTranslation();
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const location = useLocation();
   const [currentLanguage, setCurrentLanguage] = useState('en');
+  const isHome = location.pathname === '/' && !isAuthenticated;
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -33,10 +36,11 @@ const AppContent = () => {
       <div className="App">
         <nav className="navbar">
           <div className="nav-container">
-            <h1 className="nav-title">{t('title')}</h1>
+            <Link to="/" className="nav-title">{t('title')}</Link>
             <div className="nav-links">
               {isAuthenticated ? (
                 <>
+                  <Link to="/" className="nav-link">Home</Link>
                   <Link to="/appointments" className="nav-link">{t('appointments')}</Link>
                   <Link to="/doctors" className="nav-link">{t('doctors')}</Link>
                   {isAdmin && (
@@ -62,6 +66,7 @@ const AppContent = () => {
                 </>
               ) : (
                 <>
+                  <Link to="/" className="nav-link">Home</Link>
                   <Link to="/login" className="nav-link">Login</Link>
                   <Link to="/register" className="nav-link">Register</Link>
                 </>
@@ -84,7 +89,7 @@ const AppContent = () => {
           </div>
         </nav>
 
-        <main className="main-content">
+        <main className={`main-content ${isHome ? 'main-content--full' : ''}`}>
           <Routes>
             <Route
               path="/login"
@@ -96,11 +101,7 @@ const AppContent = () => {
             />
             <Route
               path="/"
-              element={
-                <ProtectedRoute>
-                  <Navigate to="/appointments" replace />
-                </ProtectedRoute>
-              }
+              element={<HomePage />}
             />
             <Route
               path="/appointments"

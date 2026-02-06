@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getDoctorById, createDoctor, updateDoctor } from '../services/api';
+import { SPECIALIZATIONS, DEPARTMENTS } from '../constants/doctorOptions';
 
 const DoctorForm = () => {
   const { t } = useTranslation();
@@ -134,25 +135,33 @@ const DoctorForm = () => {
         <div className="form-row">
           <div className="form-group">
             <label className="form-label">{t('specialization')}</label>
-            <input
-              type="text"
+            <select
               name="specialization"
-              className="form-input"
+              className="form-select"
               value={formData.specialization}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">Select specialization...</option>
+              {[...new Set([formData.specialization, ...SPECIALIZATIONS].filter(Boolean))].map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label className="form-label">{t('department')}</label>
-            <input
-              type="text"
+            <select
               name="department"
-              className="form-input"
+              className="form-select"
               value={formData.department}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">Select department...</option>
+              {[...new Set([formData.department, ...DEPARTMENTS].filter(Boolean))].map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
           </div>
         </div>
 
