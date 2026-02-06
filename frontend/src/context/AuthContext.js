@@ -118,7 +118,19 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error('Registration error:', error);
-      const errorMessage = error.response?.data?.error || error.message || 'Registration failed. Please try again.';
+      
+      // Better error handling for network/URL errors
+      let errorMessage = 'Registration failed. Please try again.';
+      
+      if (error.code === 'ERR_BAD_REQUEST' || error.response?.data?.error) {
+        errorMessage = error.response?.data?.error || errorMessage;
+      } else if (error.message?.includes('protocol') || error.message?.includes('URL')) {
+        errorMessage = 'API configuration error. Please contact support.';
+        console.error('API URL error - check REACT_APP_API_URL environment variable');
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       return {
         success: false,
         error: errorMessage,
