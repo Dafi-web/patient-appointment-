@@ -81,12 +81,13 @@ export const createAppointment = async (req, res) => {
       });
     }
 
-    // Handle file upload if present
+    // Handle file upload if present (Cloudinary)
     let documentUrl = '';
     let documentName = '';
     if (req.file) {
-      documentUrl = `/uploads/${req.file.filename}`;
-      documentName = req.file.originalname;
+      // Cloudinary returns the URL in req.file.path or req.file.url
+      documentUrl = req.file.path || req.file.url || req.file.secure_url;
+      documentName = req.file.originalname || req.file.filename || '';
     } else if (req.body.documentUrl) {
       documentUrl = req.body.documentUrl;
       documentName = req.body.documentName || '';
@@ -256,11 +257,12 @@ export const updateAppointment = async (req, res) => {
       });
     }
 
-    // Handle file upload if present
+    // Handle file upload if present (Cloudinary)
     const updateData = { ...req.body };
     if (req.file) {
-      updateData.documentUrl = `/uploads/${req.file.filename}`;
-      updateData.documentName = req.file.originalname;
+      // Cloudinary returns the URL in req.file.path or req.file.url
+      updateData.documentUrl = req.file.path || req.file.url || req.file.secure_url;
+      updateData.documentName = req.file.originalname || req.file.filename || '';
     }
 
     const appointment = await Appointment.findByIdAndUpdate(
